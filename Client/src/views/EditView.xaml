@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="Client.src.views.EditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        FontFamily="Segoe UI Emoji"
+        UseLayoutRounding="True"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=editFormViewModel}">
+
+    <Grid>
+
+        <Rectangle Height="280" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Height="50" VerticalAlignment="Bottom">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Width="850" Height="650" VerticalAlignment="Bottom" Margin="0,200" RadiusY="10" RadiusX="10" Fill="White">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid VerticalAlignment="Bottom" Margin="0,0,0,450" Width="1500">
+            <StackPanel VerticalAlignment="Center" Margin="15" >
+                <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="375,10,377,10" materialDesign:HintAssist.Hint="Title" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                         FontFamily="Champagne &amp; Limousines" FontSize="16" Width="500" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="#899E51FB"/>
+                <TextBox Text="{Binding Synopsis, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="375,50,377,10" materialDesign:HintAssist.Hint="Synopsis" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                         FontFamily="Champagne &amp; Limousines" FontSize="16" Width="500" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="80" BorderBrush="#899E51FB" Background="#00000000"/>
+                <ComboBox Name="genresCB" Margin="375,50,377,10" materialDesign:HintAssist.Hint="Genre" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                    ItemsSource="{Binding AllGenres}"
+                    SelectedValue="{Binding SelectedGenre, Mode=TwoWay}"
+                    IsSynchronizedWithCurrentItem="True"
+                    Width="500"
+                    FontSize="16"
+                    BorderBrush="#899E51FB"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontFamily="Champagne &amp; Limousines" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="{Binding MessageColor}" Margin="0, 0, 0, -130"/>
+            <Image Source="/resources/images/error.png" Visibility="{Binding ErrorMessageVisibility}" RenderOptions.BitmapScalingMode="HighQuality" Width="80" VerticalAlignment="Bottom" Margin="0, 0, 0, -90"/>
+            <Image Source="/resources/images/success.png" Visibility="{Binding SuccessMessageVisibility}" RenderOptions.BitmapScalingMode="HighQuality" Width="90" VerticalAlignment="Bottom" Margin="0, 0, 0, -90"/>
+            <Button Command="{Binding editMovieCommand}" Background="#8ad14f" Foreground="Black" BorderBrush="#8ad14f"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="-200" Width="250" Content="Save Changes"/>
+        </Grid>
+        <Image Source="/resources/images/settings_logo.jpg" RenderOptions.BitmapScalingMode="HighQuality" Width="100" Height="100" VerticalAlignment="Top" Margin="60">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <Label Content="Edit Movie" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="175" Foreground="#fff" FontSize="18"/>
+
+
+        <Rectangle Height="100" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Image Source="/Client;component/resources/images/app_logo.jpg" RenderOptions.BitmapScalingMode="HighQuality" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <DockPanel HorizontalAlignment="Left" Width="100" LastChildFill="False" Margin="0,100,0,0" VerticalAlignment="Stretch" Background="Black">
+            <Rectangle HorizontalAlignment="Left" Width="100" Margin="0,100,0,50" VerticalAlignment="Stretch" >
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                        <GradientStop Color="#f9ed32"/>
+                        <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                        <GradientStop Color="#002aff" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </DockPanel>
+        <Button Command="{Binding showHomeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,100" Width="100" Height="50" 
+                Content="Home" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Button Command="{Binding ShowProfileCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,150" Width="100" Height="50" 
+                Content="My Profile" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Button Command="{Binding SignOutCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0" Width="100" Height="50" 
+                Content="Sign Out" Background="Black" BorderBrush="Black" Foreground="White"/>
+    </Grid>
+    
+</UserControl>

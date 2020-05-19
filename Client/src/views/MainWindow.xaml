@@ -1,0 +1,52 @@
+﻿<Window x:Class="Client.src.views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Client.src.views"
+        xmlns:local1="clr-namespace:Client.src.viewmodels"
+        Height="600" 
+        Width="350"
+        WindowStyle="None" 
+        WindowState="{Binding WindowState}"
+        ResizeMode="CanMinimize" 
+        WindowStartupLocation="CenterScreen"
+        Title="Movie Stars">
+    
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local1:LoginViewModel}">
+            <local:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:RegisterViewModel}">
+            <local:RegisterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:RegisterConfirmationViewModel}">
+            <local:RegisterConfirmationView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:HomeViewModel}">
+            <local:HomeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:ProfileViewModel}">
+            <local:ProfileView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:AddViewModel}">
+            <local:AddView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:ViewViewModel}">
+            <local:ViewView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:ReviewViewModel}">
+            <local:ReviewView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local1:EditViewModel}">
+            <local:EditView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local1:NavigationViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <ContentControl Content="{Binding CurrentView}" />
+    </Grid>
+    
+</Window>

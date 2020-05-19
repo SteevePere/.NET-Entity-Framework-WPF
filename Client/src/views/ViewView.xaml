@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="Client.src.views.ViewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:helpers="clr-namespace:Client.src.helpers"
+        FontFamily="Segoe UI Emoji"
+        UseLayoutRounding="True"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=viewFormViewModel}">
+    <UserControl.Resources>
+        <helpers:ProgressToColorConverter x:Key="ProgressToColorConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+
+        <Rectangle Height="280" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Height="50" VerticalAlignment="Bottom">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Width="650" Height="650" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="150,180" RadiusY="10" RadiusX="10" Fill="White">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-270,310" Width="1500">
+            <StackPanel VerticalAlignment="Center" Margin="0" >
+                <Grid>
+                    <ProgressBar Name="averageRatingPB" 
+                                 Value="{Binding AverageScore, Mode=OneWay}" 
+                                 Foreground="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value, Converter={StaticResource ProgressToColorConverter}}"
+                                 Minimum="0" Margin="0,50" VerticalAlignment="Center" Maximum="5" Height="10" Width="250"
+                                 Background="#FFD1D1D1" BorderBrush="Transparent"/>
+                    <TextBlock Text="{Binding ElementName=averageRatingPB, Path=Value, StringFormat={}{0}/5}" HorizontalAlignment="Center" FontSize="16" />
+                    <TextBlock Text="{Binding MovieGenre}" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold"
+                            FontFamily="Champagne &amp; Limousines" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="#00000000" Foreground="PaleVioletRed"/>
+                </Grid>
+                <TextBlock Text="{Binding MovieToView.MOV_SYNOPSIS}" TextWrapping="Wrap" Margin="375,50,377,10"
+                            FontFamily="Champagne &amp; Limousines" FontSize="16" Width="500" Background="#00000000" TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+        </Grid>
+        <Rectangle Width="1050" Height="650" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50,180" RadiusY="10" RadiusX="10" Fill="White">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Image Source="/resources/images/tomato.png" RenderOptions.BitmapScalingMode="HighQuality" Width="25" Height="20" VerticalAlignment="Top" Margin="680,306,0,0">
+        </Image>
+        <Label Content="Reviews" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="780,300,0,0" FontSize="16" FontWeight="SemiBold" Foreground="#525252"/>
+        <DataGrid Name="allReviews" ItemsSource="{Binding Path=ReviewGrid,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" RowDetailsVisibilityMode="Visible"
+        AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserSortColumns="True" CanUserResizeColumns="False" Margin="750,400,0,250" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" HeadersVisibility="None"
+                  Background="#00000000" HorizontalAlignment="Center"  RowHeight="55">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn  Header="Reviewer" Width="450">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding USR_NAME}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#525252"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Header="Rating" Width="450">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <ProgressBar Name="ratingPB" 
+                                        Value="{Binding REV_RATING, Mode=OneWay}" Minimum="0" 
+                                        Foreground="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value, Converter={StaticResource ProgressToColorConverter}}"
+                                        VerticalAlignment="Center" HorizontalAlignment="Left" Maximum="5" Height="5" Width="100" Margin="50,0,0,0"
+                                        Background="#FFD1D1D1" BorderBrush="Transparent"/>
+                                <TextBlock Text="{Binding ElementName=ratingPB, Path=Value, StringFormat={}{0}/5}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding REV_CONTENT}" Margin="10" TextWrapping="Wrap" Width="700" FontStyle="Italic" FontFamily="Champagne &amp; Limousines" FontSize="14"  />
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+        <Image Source="/resources/images/camera_logo.png" RenderOptions.BitmapScalingMode="HighQuality" Width="100" Height="100" VerticalAlignment="Top" Margin="60">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <Button Command="{Binding showAddReviewCommand}"  Width="250" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="800,0,0,200" Content="Review" Background="Black" BorderBrush="Black"/>
+        <Label Content="{Binding MovieToView.MOV_TITLE}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="175" Foreground="#fff" FontSize="18"/>
+
+
+        <Rectangle Height="100" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Image Source="/Client;component/resources/images/app_logo.jpg" RenderOptions.BitmapScalingMode="HighQuality" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <DockPanel HorizontalAlignment="Left" Width="100" LastChildFill="False" Margin="0,100,0,0" VerticalAlignment="Stretch" Background="Black">
+            <Rectangle HorizontalAlignment="Left" Width="100" Margin="0,100,0,50" VerticalAlignment="Stretch" >
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                        <GradientStop Color="#f9ed32"/>
+                        <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                        <GradientStop Color="#002aff" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </DockPanel>
+        <Button Command="{Binding showHomeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,100" Width="100" Height="50"
+                Content="Home" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Button Command="{Binding ShowProfileCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,150" Width="100" Height="50" 
+                Content="My Profile" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Button Command="{Binding SignOutCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0" Width="100" Height="50" 
+                Content="Sign Out" Background="Black" BorderBrush="Black" Foreground="White"/>
+    </Grid>
+
+</UserControl>

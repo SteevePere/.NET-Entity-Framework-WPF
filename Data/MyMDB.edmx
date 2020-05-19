@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Movies" EntityType="Model1.Store.Movies" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Genres" EntityType="Model1.Store.Genres" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="Model1.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Reviews" EntityType="Model1.Store.Reviews" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MovieGenre" EntityType="Model1.Store.MovieGenre" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MovieReview" Association="Model1.Store.MovieReview">
+      <End Role="Movie" EntitySet="Movies" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="UserReview" Association="Model1.Store.UserReview">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieGenre_Movie" Association="Model1.Store.FK_MovieGenre_Movie">
+      <End Role="Movie" EntitySet="Movies" />
+      <End Role="MovieGenre" EntitySet="MovieGenre" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieGenre_Genre" Association="Model1.Store.FK_MovieGenre_Genre">
+      <End Role="Genre" EntitySet="Genres" />
+      <End Role="MovieGenre" EntitySet="MovieGenre" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Movies">
+    <Key>
+      <PropertyRef Name="MOV_ID" />
+    </Key>
+    <Property Name="MOV_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MOV_TITLE" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MOV_SYNOPSIS" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Genres">
+    <Key>
+      <PropertyRef Name="GNR_ID" />
+    </Key>
+    <Property Name="GNR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GNR_LABEL" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="USR_ID" />
+    </Key>
+    <Property Name="USR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USR_EMAIL" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="USR_PASSWORD" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="USR_FIRST_NAME" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="USR_LAST_NAME" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="USR_GENDER" Type="int" Nullable="false" />
+    <Property Name="USR_ACTIVE" Type="bit" Nullable="false" />
+    <Property Name="USR_LAST_CONNECTION_DATETIME" Type="datetime" Nullable="true" />
+    <Property Name="USR_CREATION_DATETIME" Type="datetime" Nullable="false" />
+    <Property Name="USR_EDIT_DATETIME" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reviews">
+    <Key>
+      <PropertyRef Name="REV_ID" />
+    </Key>
+    <Property Name="REV_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="REV_CONTENT" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="REV_RATING" Type="int" Nullable="false" />
+    <Property Name="Movie_MOV_ID" Type="int" Nullable="false" />
+    <Property Name="User_USR_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MovieGenre">
+    <Key>
+      <PropertyRef Name="Movies_MOV_ID" />
+      <PropertyRef Name="Genres_GNR_ID" />
+    </Key>
+    <Property Name="Movies_MOV_ID" Type="int" Nullable="false" />
+    <Property Name="Genres_GNR_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MovieReview">
+    <End Role="Movie" Type="Model1.Store.Movies" Multiplicity="1" />
+    <End Role="Review" Type="Model1.Store.Reviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="MOV_ID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="Movie_MOV_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserReview">
+    <End Role="User" Type="Model1.Store.Users" Multiplicity="1" />
+    <End Role="Review" Type="Model1.Store.Reviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="USR_ID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="User_USR_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieGenre_Movie">
+    <End Role="Movie" Type="Model1.Store.Movies" Multiplicity="1" />
+    <End Role="MovieGenre" Type="Model1.Store.MovieGenre" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="MOV_ID" />
+      </Principal>
+      <Dependent Role="MovieGenre">
+        <PropertyRef Name="Movies_MOV_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieGenre_Genre">
+    <End Role="MovieGenre" Type="Model1.Store.MovieGenre" Multiplicity="*" />
+    <End Role="Genre" Type="Model1.Store.Genres" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Genre">
+        <PropertyRef Name="GNR_ID" />
+      </Principal>
+      <Dependent Role="MovieGenre">
+        <PropertyRef Name="Genres_GNR_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="MyMDB" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Movies" EntityType="Model1.Movie" />
+          <EntitySet Name="Genres" EntityType="Model1.Genre" />
+          <EntitySet Name="Users" EntityType="Model1.User" />
+          <EntitySet Name="Reviews" EntityType="Model1.Review" />
+          <AssociationSet Name="MovieReview" Association="Model1.MovieReview">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="UserReview" Association="Model1.UserReview">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="MovieGenre" Association="Model1.MovieGenre">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Movie">
+          <Key>
+            <PropertyRef Name="MOV_ID" />
+          </Key>
+          <Property Name="MOV_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MOV_TITLE" Type="String" Nullable="false" />
+          <Property Name="MOV_SYNOPSIS" Type="String" Nullable="true" />
+          <NavigationProperty Name="Reviews" Relationship="Model1.MovieReview" FromRole="Movie" ToRole="Review" />
+          <NavigationProperty Name="Genres" Relationship="Model1.MovieGenre" FromRole="Movie" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GNR_ID" />
+          </Key>
+          <Property Name="GNR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GNR_LABEL" Type="String" Nullable="false" />
+          <NavigationProperty Name="Movies" Relationship="Model1.MovieGenre" FromRole="Genre" ToRole="Movie" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="USR_ID" />
+          </Key>
+          <Property Name="USR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USR_EMAIL" Type="String" Nullable="false" />
+          <Property Name="USR_PASSWORD" Type="String" Nullable="false" />
+          <Property Name="USR_FIRST_NAME" Type="String" Nullable="false" />
+          <Property Name="USR_LAST_NAME" Type="String" Nullable="false" />
+          <Property Name="USR_GENDER" Type="Model1.USR_GENDER" Nullable="false" />
+          <Property Name="USR_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="USR_LAST_CONNECTION_DATETIME" Type="DateTime" Nullable="true" />
+          <Property Name="USR_CREATION_DATETIME" Type="DateTime" Nullable="false" />
+          <Property Name="USR_EDIT_DATETIME" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Model1.UserReview" FromRole="User" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="REV_ID" />
+          </Key>
+          <Property Name="REV_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REV_CONTENT" Type="String" Nullable="true" />
+          <Property Name="REV_RATING" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Movie" Relationship="Model1.MovieReview" FromRole="Review" ToRole="Movie" />
+          <NavigationProperty Name="User" Relationship="Model1.UserReview" FromRole="Review" ToRole="User" />
+        </EntityType>
+        <EnumType Name="USR_GENDER">
+          <Member Name="M" />
+          <Member Name="F" />
+        </EnumType>
+        <Association Name="MovieReview">
+          <End Type="Model1.Movie" Role="Movie" Multiplicity="1" >
+          </End>
+          <End Type="Model1.Review" Role="Review" Multiplicity="*" />
+        </Association>
+        <Association Name="UserReview">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.Review" Role="Review" Multiplicity="*" />
+        </Association>
+        <Association Name="MovieGenre">
+          <End Type="Model1.Movie" Role="Movie" Multiplicity="*" >
+          </End>
+          <End Type="Model1.Genre" Role="Genre" Multiplicity="*" >
+          </End>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="MyMDB">
+    <EntitySetMapping Name="Movies">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Movie)">
+        <MappingFragment StoreEntitySet="Movies">
+          <ScalarProperty Name="MOV_ID" ColumnName="MOV_ID" />
+          <ScalarProperty Name="MOV_TITLE" ColumnName="MOV_TITLE" />
+          <ScalarProperty Name="MOV_SYNOPSIS" ColumnName="MOV_SYNOPSIS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Genres">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Genre)">
+        <MappingFragment StoreEntitySet="Genres">
+          <ScalarProperty Name="GNR_ID" ColumnName="GNR_ID" />
+          <ScalarProperty Name="GNR_LABEL" ColumnName="GNR_LABEL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="USR_ID" ColumnName="USR_ID" />
+          <ScalarProperty Name="USR_EMAIL" ColumnName="USR_EMAIL" />
+          <ScalarProperty Name="USR_PASSWORD" ColumnName="USR_PASSWORD" />
+          <ScalarProperty Name="USR_FIRST_NAME" ColumnName="USR_FIRST_NAME" />
+          <ScalarProperty Name="USR_LAST_NAME" ColumnName="USR_LAST_NAME" />
+          <ScalarProperty Name="USR_GENDER" ColumnName="USR_GENDER" />
+          <ScalarProperty Name="USR_ACTIVE" ColumnName="USR_ACTIVE" />
+          <ScalarProperty Name="USR_LAST_CONNECTION_DATETIME" ColumnName="USR_LAST_CONNECTION_DATETIME" />
+          <ScalarProperty Name="USR_CREATION_DATETIME" ColumnName="USR_CREATION_DATETIME" />
+          <ScalarProperty Name="USR_EDIT_DATETIME" ColumnName="USR_EDIT_DATETIME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reviews">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Review)">
+        <MappingFragment StoreEntitySet="Reviews">
+          <ScalarProperty Name="REV_ID" ColumnName="REV_ID" />
+          <ScalarProperty Name="REV_CONTENT" ColumnName="REV_CONTENT" />
+          <ScalarProperty Name="REV_RATING" ColumnName="REV_RATING" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MovieReview" TypeName="Model1.MovieReview" StoreEntitySet="Reviews">
+      <EndProperty Name="Movie">
+        <ScalarProperty Name="MOV_ID" ColumnName="Movie_MOV_ID" />
+      </EndProperty>
+      <EndProperty Name="Review">
+        <ScalarProperty Name="REV_ID" ColumnName="REV_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserReview" TypeName="Model1.UserReview" StoreEntitySet="Reviews">
+      <EndProperty Name="User">
+        <ScalarProperty Name="USR_ID" ColumnName="User_USR_ID" />
+      </EndProperty>
+      <EndProperty Name="Review">
+        <ScalarProperty Name="REV_ID" ColumnName="REV_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MovieGenre" TypeName="Model1.MovieGenre" StoreEntitySet="MovieGenre">
+      <EndProperty Name="Movie">
+        <ScalarProperty Name="MOV_ID" ColumnName="Movies_MOV_ID" />
+      </EndProperty>
+      <EndProperty Name="Genre">
+        <ScalarProperty Name="GNR_ID" ColumnName="Genres_GNR_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

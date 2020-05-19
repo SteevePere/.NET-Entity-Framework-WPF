@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="Client.src.views.HomeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:helpers="clr-namespace:Client.src.helpers"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        FontFamily="Segoe UI Emoji"
+        UseLayoutRounding="True"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=homeViewModel}">
+    <UserControl.Resources>
+        <helpers:ProgressToColorConverter x:Key="ProgressToColorConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Rectangle Height="280" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Height="50" VerticalAlignment="Bottom" Margin="100, 0, 0, 0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Image Source="/resources/images/search_logo.png" RenderOptions.BitmapScalingMode="HighQuality" Width="90" Height="90" VerticalAlignment="Top" Margin="70">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <Label Content="All Movies" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="175" Foreground="#fff" FontSize="18"/>
+
+        <Button Command="{Binding ShowAddFormCommand}" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,200,170,0" 
+                Content="New Movie" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Rectangle Width="1500" Height="700" VerticalAlignment="Top" Margin="250,250,150,50" RadiusY="10" RadiusX="10" Fill="White">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <DataGrid Name="allMovies" ItemsSource="{Binding Path=MovieGrid,Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" 
+            AutoGenerateColumns="False" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="300,300,200,200" Background="#00000000" RowHeight="55">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn  Header="Title" Width="300">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding MOV_TITLE}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Header="Genre" Width="300">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding MOV_GENRES}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Header="Average Rating" Width="300">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <ProgressBar Name="averageRatingPB" Value="{Binding MOV_RATING, Mode=OneWay}" 
+                                        Foreground="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value, Converter={StaticResource ProgressToColorConverter}}"
+                                        Minimum="0" VerticalAlignment="Center" Maximum="5" Height="5" Width="100" Background="#FFD1D1D1" BorderBrush="Transparent"/>
+                                <TextBlock Text="{Binding ElementName=averageRatingPB, Path=Value, StringFormat={}{0}/5}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn  Header="Reviews" Width="175">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding MOV_REVIEWS}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="View"
+                                    Background="Transparent"
+                                    Foreground="Black"
+                                    Margin="0,0,5,0"
+                                    Width="75"
+                                    CommandParameter="{Binding MOV_ID}"
+                                    Command="{Binding DataContext.ViewCommand, ElementName=allMovies}"/>
+                                <Button Content="Edit"
+                                    Margin="0,0,5,0"
+                                    Width="75"
+                                    Background="Transparent"
+                                    BorderBrush="YellowGreen"
+                                    Foreground="Black"
+                                    CommandParameter="{Binding MOV_ID}"
+                                    Command="{Binding DataContext.EditCommand, ElementName=allMovies}"/>
+                                <Button Content="Delete"
+                                    Width="75"
+                                    Foreground="Black"
+                                    Background="Transparent"
+                                    BorderBrush="#ee2a7b"
+                                    CommandParameter="{Binding MOV_ID}"
+                                    Command="{Binding DataContext.DeleteCommand, ElementName=allMovies}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Rectangle Height="100" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Image Source="/Client;component/resources/images/app_logo.jpg" RenderOptions.BitmapScalingMode="HighQuality" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+        <DockPanel HorizontalAlignment="Left" Width="100" LastChildFill="False" Margin="0,100,0,0" VerticalAlignment="Stretch" Background="Black">
+            <Rectangle HorizontalAlignment="Left" Width="100" Margin="0,100,0,50" VerticalAlignment="Stretch" >
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                        <GradientStop Color="#f9ed32"/>
+                        <GradientStop Color="#ee2a7b" Offset="0.5"/>
+                        <GradientStop Color="#002aff" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </DockPanel>
+        <Button Command="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,100" Width="100" Height="50" Background="Black" BorderBrush="Yellow" 
+                Foreground="White" Content="Home"/>
+        <Button Command="{Binding ShowProfileCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,150" Width="100" Height="50" 
+                Content="My Profile" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <Button Command="{Binding SignOutCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0" Width="100" Height="50" Content="Sign Out" Background="Black" BorderBrush="Black" Foreground="White"/>
+        <TextBox HorizontalAlignment="Right" Height="50" Margin="0,180,370,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" 
+                Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Search by Title" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="14" Foreground="Black" CaretBrush="White" BorderBrush="#89FFFFFF"/>
+        <ComboBox Name="genresCB" materialDesign:HintAssist.Hint="Search by Genre" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                    HorizontalAlignment="Right" Margin="0,187,200,0" VerticalAlignment="Top" Width="150"
+                    ItemsSource="{Binding AllGenres}"
+                    SelectedValue="{Binding SelectedGenre, Mode=TwoWay}"
+                    IsSynchronizedWithCurrentItem="True"
+                    BorderBrush="#89FFFFFF" Foreground="Black" FontSize="14"/>
+    </Grid>
+</UserControl>

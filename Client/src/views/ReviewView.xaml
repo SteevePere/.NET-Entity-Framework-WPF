@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Client.src.views.ReviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        FontFamily="Segoe UI Emoji"
+        UseLayoutRounding="True"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=addReviewFormViewModel}">
+    
+    <Grid>
+        <Rectangle Height="150" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Height="80" VerticalAlignment="Bottom">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#002aff"/>
+                    <GradientStop Color="#ee2a7b" Offset="0.4"/>
+                    <GradientStop Color="#f9ed32" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Width="900" Height="500" VerticalAlignment="Center" Margin="0,50" RadiusY="10" RadiusX="10" Fill="White">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Grid VerticalAlignment="Center" Margin="650, 170" Height="400">
+            <StackPanel VerticalAlignment="Top" Margin="0">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0" FontWeight="SemiBold" Foreground="#525252" FontSize="18"  FontFamily="Champagne &amp; Limousines">
+                    <Run Text="Your Review of"/>
+                    <Run Text="{Binding MovieToReview.MOV_TITLE}" />
+                </TextBlock> 
+                <Slider Name="ratingSlider"  Value="{Binding ReviewRating, Mode=TwoWay}" Maximum="5" IsSnapToTickEnabled="True" Margin="0,100,0,10"/>
+                <TextBlock Text="{Binding ElementName=ratingSlider, Path=Value, StringFormat={}{0}/5}" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding ReviewContent, UpdateSourceTrigger=PropertyChanged}" Margin="0,50"  materialDesign:HintAssist.Hint="Your Review" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
+            </StackPanel>
+        </Grid>
+        <Button Command="{Binding cancelCommand}" Width="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="-70,0,100,270" Content="Cancel" Foreground="Black" Background="White" BorderBrush="IndianRed"/>
+        <Button Command="{Binding addReviewCommand}" Width="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="200,0,0,270" Content="Submit Review" Foreground="Black" Background="#8ad14f" BorderBrush="#8ad14f"/>
+        <Image Source="/resources/images/review_logo.png" RenderOptions.BitmapScalingMode="HighQuality" Width="100" Height="100" VerticalAlignment="Top" Margin="30">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#000"/>
+            </Image.Effect>
+        </Image>
+    </Grid>
+    
+</UserControl>
